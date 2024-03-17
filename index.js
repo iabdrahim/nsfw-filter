@@ -42,9 +42,13 @@ app.post('/nsfw', upload.single("image"), async (req, res) => {
     const image = await convert(req.file.buffer)
     let predictions = await _model.classify(image)
     image.dispose();
-    const isNsfw = predictions[0].probability > 50;
+       const probabilities = predictions.map((item) => ({...item,probability:item.probability * 100}));
+        function checkIfNsfw(values) {
+        return values.filter(v=>v.className!="Neutral").some((value) => value.probability > 50);
+        }
+        const isNsfw = checkIfNsfw(probabilities);
 
-    return res.status(200).send({ isNsfw, predictions });
+    return res.status(200).send({ isNsfw, probabilities });
     }catch(err){
       console.error(err)
       return res.send("Internal server error")
