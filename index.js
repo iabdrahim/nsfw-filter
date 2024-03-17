@@ -44,7 +44,7 @@ app.post('/nsfw', upload.single("image"), async (req, res) => {
     image.dispose();
        const probabilities = predictions.map((item) => ({...item,probability:item.probability * 100}));
         function checkIfNsfw(values) {
-        return values.filter(v=>v.className!="Neutral").some((value) => value.probability > 50);
+        return values.filter(v=>v.className!="Neutral").some((value) => value.probability > 65);
         }
         const isNsfw = checkIfNsfw(probabilities);
 
