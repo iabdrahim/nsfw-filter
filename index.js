@@ -44,7 +44,7 @@ app.post('/nsfw', upload.single("image"), async (req, res) => {
     image.dispose();
     const isNsfw = predictions[0].probability > 50;
 
-    return res.status(200).send({ isNsfw, probabilities });
+    return res.status(200).send({ isNsfw, predictions });
     }catch(err){
       console.error(err)
       return res.send("Internal server error")
