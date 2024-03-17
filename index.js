@@ -10,7 +10,7 @@ const upload = multer()
 
 let _model
 
-app.all('*',(req,res)=>{
+app.all('*',(req,res,next)=>{
   // Add all the necessary headers and call next()
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
