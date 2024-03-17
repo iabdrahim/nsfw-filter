@@ -41,6 +41,13 @@ app.post('/nsfw', upload.single("image"), async (req, res) => {
     const image = await convert(req.file.buffer)
     const predictions = await _model.classify(image)
     image.dispose()
+        const probabilities = predictions.map((item) => ({...item,probability:item.probability * 100}));
+        function checkIfNsfw(values) {
+        return values.some((value) => value.probability > 50);
+        }
+        const isNsfw = checkIfNsfw(probabilities);
+
+        return res.status(200).send({ isNsfw, probabilities });
     res.json(predictions)
   }
 })
